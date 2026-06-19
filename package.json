@@ -1,0 +1,21 @@
+{
+  "name": "lan-queue-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LAN queue calling system MVP",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "smoke:50": "node scripts/smoke-50.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "socket.io-client": "^4.8.1"
+  }
+}

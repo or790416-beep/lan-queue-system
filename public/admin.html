@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>115年第2梯次即測即評檢定室內配線(屋內線路裝修)職類</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <h1>115年第2梯次即測即評檢定室內配線(屋內線路裝修)職類</h1>
+      <span id="connectionStatus" class="status">連線中</span>
+    </header>
+
+    <section id="loginPanel" class="panel login-panel">
+      <h2>工作人員登入</h2>
+      <form id="loginForm" class="login-form">
+        <input id="pinInput" type="password" inputmode="numeric" autocomplete="current-password" placeholder="請輸入後台 PIN">
+        <button type="submit">登入</button>
+      </form>
+      <p id="loginMessage" class="message error" role="alert"></p>
+    </section>
+
+    <div id="adminContent" hidden>
+      <section class="admin-toolbar">
+        <button id="logoutBtn" type="button">登出</button>
+      </section>
+
+      <section id="counterPanels" class="counter-grid"></section>
+
+      <section class="panel">
+        <h2>未到清單</h2>
+        <ul id="noShowList" class="list"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>系統</h2>
+        <button id="resetBtn" class="danger">重設今日號碼</button>
+        <p id="message" class="message" role="status"></p>
+      </section>
+    </div>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>

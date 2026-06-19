@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>即測即評叫號狀態</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body class="public-body">
+  <main class="public-layout">
+    <h1 class="public-title">
+      <span>115年第2梯次即測即評檢定</span>
+      <span class="display-title-red">室內配線(屋內線路裝修)職類丙級</span>
+    </h1>
+
+    <section class="public-current">
+      <h2>目前叫號</h2>
+      <div id="publicCounters" class="public-counter-grid"></div>
+    </section>
+
+    <p class="public-note">本頁僅供查看叫號狀態，實際叫號以現場公告為準。</p>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/public.js"></script>
+</body>
+</html>
