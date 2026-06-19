@@ -296,6 +296,28 @@ h2 {
   font-weight: 700;
 }
 
+.start-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, .82);
+  color: #fff;
+  cursor: pointer;
+}
+
+.start-overlay[hidden] {
+  display: none;
+}
+
+.start-overlay-inner {
+  font-size: clamp(28px, 6vw, 64px);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
 .public-body {
   background: #f3f6f8;
 }

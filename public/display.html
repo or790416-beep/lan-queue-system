@@ -15,6 +15,10 @@
 
     <section id="displayCounters" class="display-counter-grid"></section>
   </main>
+  <!-- 一次性解鎖提示;kiosk 啟動會自動略過 -->
+  <div id="startOverlay" class="start-overlay" hidden>
+    <div class="start-overlay-inner">點擊螢幕開始</div>
+  </div>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/display.js"></script>
 </body>

@@ -91,6 +91,30 @@ https://your-app.onrender.com/public.html
 - SQLite 資料保存依 Persistent Disk。
 - 若未設定 Persistent Disk，資料可能因 redeploy / restart 遺失。
 
+### 現場大螢幕 kiosk 啟動
+
+建議用 Chrome kiosk 模式開啟 `display.html`，並關閉自動播放限制，這樣現場大螢幕可免點擊直接發出叫號語音。
+
+Windows：
+
+```text
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --kiosk --autoplay-policy=no-user-gesture-required --app=https://lan-queue-system.onrender.com/display.html
+```
+
+macOS：
+
+```bash
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --kiosk --autoplay-policy=no-user-gesture-required --app=https://lan-queue-system.onrender.com/display.html
+```
+
+本機測試時把網址換成：
+
+```text
+http://localhost:3000/display.html
+```
+
+退出 kiosk：Windows 用 Alt + F4，macOS 用 Cmd + Q。
+
 ## 7. 驗收清單
 
 - `/health` 回 `ok: true`。
