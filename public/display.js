@@ -2,9 +2,7 @@ const socket = io();
 
 const audio = { ctx: null, queue: [], playing: false, played: new Set() };
 const SOUND_EVENTS = ['next', 'jump', 'recall', 'no_show_call'];
-const CALLABLE_EVENTS = ['next', 'jump', 'recall', 'no_show_call'];
 let hasInitialState = false;
-let lastCall = null;
 
 const els = {
   displayCounters: document.getElementById('displayCounters')
@@ -89,9 +87,6 @@ function playPrefixAnnouncement() {
   if (!isUnlocked()) return;
 
   audio.queue.push('/audio/prefix.mp3');
-  if (lastCall) {
-    audio.queue.push(`/audio/call-${lastCall.number}-${lastCall.counterId}.mp3`);
-  }
   playNext();
 }
 
@@ -133,11 +128,6 @@ function render(state) {
 
 function handleState(state) {
   render(state);
-  if (state.lastEvent && CALLABLE_EVENTS.includes(state.lastEvent.type)) {
-    lastCall = state.lastEvent;
-  } else if (!state.lastEvent || state.lastEvent.type === 'reset') {
-    lastCall = null;
-  }
   enqueueAnnouncement(state.lastEvent, { silent: !hasInitialState });
   hasInitialState = true;
 }
