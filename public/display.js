@@ -121,16 +121,12 @@ function playNext() {
     finished = true;
     el.removeEventListener('ended', done);
     el.removeEventListener('error', done);
-    el.removeEventListener('abort', done);
-    el.removeEventListener('emptied', done);
     audio.playing = false;
     playNext();
   };
 
   el.addEventListener('ended', done);
   el.addEventListener('error', done);
-  el.addEventListener('abort', done);
-  el.addEventListener('emptied', done);
   el.play().catch(done);
 }
 
