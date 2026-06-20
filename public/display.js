@@ -1,7 +1,7 @@
 const socket = io();
 
 const audio = { ctx: null, queue: [], playing: false, played: new Set() };
-const SOUND_EVENTS = ['next', 'jump', 'recall'];
+const SOUND_EVENTS = ['next', 'jump', 'recall', 'no_show_call'];
 const CALLABLE_EVENTS = ['next', 'jump', 'recall', 'no_show_call'];
 let hasInitialState = false;
 let lastCall = null;
@@ -72,7 +72,10 @@ function playNext() {
 
   audio.playing = true;
   const el = new Audio(audio.queue.shift());
+  let finished = false;
   const done = () => {
+    if (finished) return;
+    finished = true;
     audio.playing = false;
     playNext();
   };
@@ -132,6 +135,8 @@ function handleState(state) {
   render(state);
   if (state.lastEvent && CALLABLE_EVENTS.includes(state.lastEvent.type)) {
     lastCall = state.lastEvent;
+  } else if (!state.lastEvent || state.lastEvent.type === 'reset') {
+    lastCall = null;
   }
   enqueueAnnouncement(state.lastEvent, { silent: !hasInitialState });
   hasInitialState = true;
