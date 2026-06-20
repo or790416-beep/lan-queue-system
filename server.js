@@ -91,6 +91,10 @@ const initState = db.transaction(() => {
 initState();
 
 app.use(express.json());
+app.use('/audio', express.static(path.join(__dirname, 'public', 'audio'), {
+  immutable: true,
+  maxAge: '30d'
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/health', (req, res) => {
@@ -243,7 +247,7 @@ app.post('/api/admin/counters/:counterId/next', requireAdmin, asyncRoute((req, r
 
     db.prepare(`
       UPDATE counters
-      SET current_number = ?, updated_at = ?
+      SET current_number = ?, recall_number = NULL, updated_at = ?
       WHERE id = ?
     `).run(nextNumber, timestamp, counterId);
     db.prepare(`
@@ -293,7 +297,7 @@ app.post('/api/admin/counters/:counterId/jump', requireAdmin, asyncRoute((req, r
 
     db.prepare(`
       UPDATE counters
-      SET current_number = ?, updated_at = ?
+      SET current_number = ?, recall_number = NULL, updated_at = ?
       WHERE id = ?
     `).run(number, timestamp, counterId);
     db.prepare(`

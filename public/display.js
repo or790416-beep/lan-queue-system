@@ -1,7 +1,9 @@
 const socket = io();
 
 const audio = { ctx: null, queue: [], playing: false, played: new Set() };
+const audioCache = new Map();
 const SOUND_EVENTS = ['next', 'jump', 'recall', 'no_show_call'];
+const PRELOAD_AHEAD = 5;
 let hasInitialState = false;
 
 const els = {
@@ -24,10 +26,46 @@ function isUnlocked() {
   return Boolean(ctx && ctx.state === 'running');
 }
 
+function getAudioEl(url) {
+  let el = audioCache.get(url);
+  if (!el) {
+    el = new Audio(url);
+    el.preload = 'auto';
+    audioCache.set(url, el);
+  }
+  return el;
+}
+
+function warmUpAudio(state) {
+  getAudioEl('/audio/prefix.mp3').load();
+  warmUpCalls(state);
+}
+
+function warmUpCalls(state) {
+  if (!state) return;
+
+  const urls = new Set();
+  (state.counters || []).forEach((counter) => {
+    [counter.currentNumber, counter.recallNumber].forEach((number) => {
+      if (number) urls.add(`/audio/call-${number}-${counter.id}.mp3`);
+    });
+  });
+
+  const nextNumber = Number(state.lastCalledNumber || 0) + 1;
+  for (let number = nextNumber; number < nextNumber + PRELOAD_AHEAD; number += 1) {
+    (state.counters || []).forEach((counter) => {
+      urls.add(`/audio/call-${number}-${counter.id}.mp3`);
+    });
+  }
+
+  urls.forEach((url) => getAudioEl(url).load());
+}
+
 function setupUnlock() {
   const overlay = document.getElementById('startOverlay');
   if (isUnlocked()) {
     if (overlay) overlay.hidden = true;
+    warmUpAudio();
     return;
   }
 
@@ -43,6 +81,7 @@ function setupUnlock() {
       }
     }
     if (overlay) overlay.hidden = true;
+    if (isUnlocked()) warmUpAudio();
     window.removeEventListener('pointerdown', unlock);
     window.removeEventListener('keydown', unlock);
   };
@@ -69,11 +108,18 @@ function playNext() {
   if (audio.playing || !audio.queue.length) return;
 
   audio.playing = true;
-  const el = new Audio(audio.queue.shift());
+  const el = getAudioEl(audio.queue.shift());
+  try {
+    el.currentTime = 0;
+  } catch (error) {
+    // Some browsers may reject seeking before metadata is ready; playback can continue.
+  }
   let finished = false;
   const done = () => {
     if (finished) return;
     finished = true;
+    el.removeEventListener('ended', done);
+    el.removeEventListener('error', done);
     audio.playing = false;
     playNext();
   };
@@ -128,6 +174,7 @@ function render(state) {
 
 function handleState(state) {
   render(state);
+  if (isUnlocked()) warmUpAudio(state);
   enqueueAnnouncement(state.lastEvent, { silent: !hasInitialState });
   hasInitialState = true;
 }
