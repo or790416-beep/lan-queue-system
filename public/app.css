@@ -185,6 +185,17 @@ h2 {
   margin-bottom: 16px;
 }
 
+.announcement-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.announcement-panel h2 {
+  margin-bottom: 0;
+}
+
 .columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

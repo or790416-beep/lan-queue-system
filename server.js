@@ -227,6 +227,11 @@ app.post('/api/admin/login', asyncRoute((req, res) => {
   fail(res, 401, 'PIN 錯誤');
 }));
 
+app.post('/api/admin/announce', requireAdmin, asyncRoute((req, res) => {
+  io.emit('announce:prefix', {});
+  ok(res);
+}));
+
 app.post('/api/admin/counters/:counterId/next', requireAdmin, asyncRoute((req, res) => {
   const counterId = parseCounterId(req.params.counterId);
   if (!counterId) return fail(res, 400, '櫃檯無效');

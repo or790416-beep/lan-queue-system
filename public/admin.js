@@ -12,6 +12,7 @@ const els = {
   loginMessage: document.getElementById('loginMessage'),
   adminContent: document.getElementById('adminContent'),
   logoutBtn: document.getElementById('logoutBtn'),
+  announceBtn: document.getElementById('announceBtn'),
   counterPanels: document.getElementById('counterPanels'),
   noShowList: document.getElementById('noShowList'),
   message: document.getElementById('message'),
@@ -218,6 +219,10 @@ els.loginForm.addEventListener('submit', async (event) => {
 });
 
 els.logoutBtn.addEventListener('click', showLogin);
+
+els.announceBtn.addEventListener('click', () => {
+  postAction('/api/admin/announce');
+});
 
 els.resetBtn.addEventListener('click', () => {
   if (confirm('確定要重設今日號碼？此操作會清空目前號碼資料。')) {

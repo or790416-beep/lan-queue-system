@@ -95,6 +95,10 @@ try {
   assert(unauthorized.response.status === 401, 'Expected unauthorized admin operation to return 401');
   assert(unauthorized.data.error === '未授權', 'Expected unauthorized error message');
 
+  const unauthorizedAnnounce = await request('/api/admin/announce', { method: 'POST' });
+  assert(unauthorizedAnnounce.response.status === 401, 'Expected unauthorized announce to return 401');
+  assert(unauthorizedAnnounce.data.error === '未授權', 'Expected unauthorized announce error message');
+
   const badLogin = await request('/api/admin/login', {
     method: 'POST',
     body: JSON.stringify({ pin: '0000' })
