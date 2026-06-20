@@ -377,7 +377,7 @@ app.post('/api/admin/counters/:counterId/clear-recall', requireAdmin, asyncRoute
     const timestamp = now();
     db.prepare(`
       UPDATE counters
-      SET recall_number = NULL, updated_at = ?
+      SET recall_number = NULL, current_number = NULL, updated_at = ?
       WHERE id = ?
     `).run(timestamp, counterId);
     db.prepare('UPDATE system_state SET updated_at = ? WHERE id = 1').run(timestamp);

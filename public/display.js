@@ -153,7 +153,9 @@ function counterCard(counter, lastEvent) {
 
   const displayNumber = counter.recallNumber || counter.currentNumber || '--';
   const displayText = displayNumber === '--' ? '' : `${displayNumber}號請到${counter.id}號櫃檯辦理`;
-  const activeText = lastEvent && lastEvent.counterId === counter.id ? lastEvent.announcementText : displayText;
+  const activeText = displayNumber === '--'
+    ? ''
+    : (lastEvent && lastEvent.counterId === counter.id ? lastEvent.announcementText : displayText);
 
   article.innerHTML = `
     <h2>${counter.id} 號櫃檯</h2>
