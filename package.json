@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "smoke:50": "node scripts/smoke-50.mjs"
+    "smoke:50": "node scripts/smoke-50.mjs",
+    "load:public:100": "node scripts/load-public-100.mjs"
   },
   "dependencies": {
     "better-sqlite3": "^12.10.0",
