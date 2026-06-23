@@ -148,11 +148,11 @@ function counterPanel(counter) {
   noShowBtn.textContent = '標記目前號碼未到';
   noShowBtn.addEventListener('click', () => postAction(`/api/admin/counters/${counter.id}/no-show`));
 
-  const clearRecallBtn = document.createElement('button');
-  clearRecallBtn.textContent = '清除過號';
-  clearRecallBtn.addEventListener('click', () => postAction(`/api/admin/counters/${counter.id}/clear-recall`));
+  const recallNoShowBtn = document.createElement('button');
+  recallNoShowBtn.textContent = '重叫過號號碼';
+  recallNoShowBtn.addEventListener('click', () => postAction(`/api/admin/counters/${counter.id}/recall-no-show`));
 
-  actions.append(nextBtn, recallBtn, noShowBtn, clearRecallBtn);
+  actions.append(nextBtn, recallBtn, noShowBtn, recallNoShowBtn);
 
   const jumpForm = document.createElement('form');
   jumpForm.className = 'inline-form';

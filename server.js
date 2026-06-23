@@ -369,6 +369,24 @@ app.post('/api/admin/no-show/:id/call', requireAdmin, asyncRoute((req, res) => {
   ok(res, { state: emitState() });
 }));
 
+app.post('/api/admin/counters/:counterId/recall-no-show', requireAdmin, asyncRoute((req, res) => {
+  const counterId = parseCounterId(req.params.counterId);
+  if (!counterId) return fail(res, 400, '櫃檯無效');
+
+  const recallNoShow = db.transaction(() => {
+    const counter = db.prepare('SELECT recall_number FROM counters WHERE id = ?').get(counterId);
+    if (!counter || !counter.recall_number) return { error: '目前沒有可重叫的過號號碼' };
+
+    const timestamp = now();
+    setLastEvent('no_show_call', counterId, counter.recall_number, timestamp);
+    return {};
+  });
+
+  const result = recallNoShow();
+  if (result.error) return fail(res, 400, result.error);
+  ok(res, { state: emitState() });
+}));
+
 app.post('/api/admin/counters/:counterId/clear-recall', requireAdmin, asyncRoute((req, res) => {
   const counterId = parseCounterId(req.params.counterId);
   if (!counterId) return fail(res, 400, '櫃檯無效');
